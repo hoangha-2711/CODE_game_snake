@@ -1,69 +1,120 @@
-#include "game.h"
+#include "snake.h"
+#include "sources.h"
 #include <iostream>
+#include <string>
 
-game::game()
+snake::snake()
+{
+    snakePart.x = SCREEN_WIDTH / 4;
+    snakePart.y = SCREEN_HEIGHT / 2;
+    snakePart.h = SNAKE_SIZE;
+    snakePart.w = SNAKE_SIZE;
+    direct = None;
+    preDirect = None;
+    snakeCell.push_back(snakePart);
+    isDead = false;
+    grow = false;
+}
+
+snake::~snake()
 {
 
 }
 
-game::~game()
+void snake::setDirection(int newDirect)
 {
-
-}
-
-void game::init(SDL_Renderer* renderer)
-{
-    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-    SDL_RenderClear(renderer);
-
-    gameBackground.init(renderer);
-    gameBackground.load();
-    snakeImage.init(renderer);
-    snakeImage.load();
-    fruitImage.init(renderer);
-    fruitImage.load();
-}
-
-void game::handleKeyPress(int key_code)
-{
-    switch(key_code)
+    if(direct == None)
     {
-        case SDLK_UP:
-            player.setDirection(Up);
-            break;
-        case SDLK_DOWN:
-            player.setDirection(Down);
-            break;
-        case SDLK_LEFT:
-            player.setDirection(Left);
-            break;
-        case SDLK_RIGHT:
-            player.setDirection(Right);
-            break;
+        preDirect = direct;
+        direct = newDirect;
     }
-    player.snakeMove();
-}
-void game::loop(bool& running)
-{
-    SDL_Delay(GAME_DELAY);
-    player.snakeMove();
-    score.spawnFruit();
-    SDL_Rect playerRect = {player.getPosX(), player.getPosY(), SNAKE_CELL, SNAKE_CELL};
-    SDL_Rect scoreRect = {score.getPosX(), score.getPosY(), FRUIT_CELL, FRUIT_CELL};
-    if(Collision(playerRect, scoreRect))
+    else if((direct == Up && newDirect != Down) || (direct == Down && newDirect != Up))
     {
-        score.decreaseFruit();
-        player.grownUp();
+        preDirect = direct;
+        direct = newDirect;
     }
-    if(player.dead()) running = false;
+    else if((direct == Left && newDirect != Right) || (direct == Right && newDirect != Left))
+    {
+        preDirect = direct;
+        direct = newDirect;
+    }
 }
 
-void game::render(SDL_Renderer* renderer)
+void snake::eraseTail()
 {
-    gameBackground.display();
+    snakeCell.erase(snakeCell.begin());
+}
 
-    snakeImage.draw_snake(player.getCell());
-    if(score.countFruit() > 0) fruitImage.draw_fruit(score.getPosX(), score.getPosY());
+void snake::snakeMove()
+{
+    switch(direct)
+    {
+    case Up:
+        if(preDirect != Down)
+        {
+            snakePart.y -= SNAKE_SPEED;
+            snakeCell.push_back(snakePart);
+            if(!grow) eraseTail();
+            else grow = false;
+            if(snakePart.y < LIMIT_UP) isDead = true;//snakePart.y += SNAKE_SPEED;
+        }
+        break;
+    case Down:
+        if(preDirect != Up)
+        {
+            snakePart.y += SNAKE_SPEED;
+            snakeCell.push_back(snakePart);
+            if(!grow) eraseTail();
+            else grow = false;
+            if(snakePart.y > SCREEN_HEIGHT - LIMIT_DOWN - SNAKE_CELL) isDead = true;//snakePart.y -= SNAKE_SPEED;
+        }
+        break;
+    case Left:
+        if(preDirect != Right)
+        {
+            snakePart.x -= SNAKE_SPEED;
+            snakeCell.push_back(snakePart);
+            if(!grow) eraseTail();
+            else grow = false;
+            if(snakePart.x < LIMIT_LEFT) isDead = true;//snakePart.x += SNAKE_SPEED;
+        }
+        break;
+    case Right:
+        if(preDirect != Left)
+        {
+            snakePart.x += SNAKE_SPEED;
+            snakeCell.push_back(snakePart);
+            if(!grow) eraseTail();
+            else grow = false;
+            if(snakePart.x > SCREEN_WIDTH - LIMIT_RIGHT - SNAKE_CELL) isDead = true;//snakePart.x -= SNAKE_SPEED;
+        }
+        break;
+    case None:
+        break;
+    }
+}
 
-    SDL_RenderPresent(renderer);
+void snake::grownUp()
+{
+    grow = true;
+}
+
+bool snake::dead()
+{
+    return isDead;
+}
+
+vector<SDL_Rect> snake::getCell()
+{
+    return snakeCell;
+}
+
+int snake::getPosX()
+{
+    return snakePart.x;
+}
+
+int snake::getPosY()
+{
+    return snakePart.y;
 }
