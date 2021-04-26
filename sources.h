@@ -1,8 +1,13 @@
 #ifndef SOURCES_H_
 #define SOURCES_H_
 #include<SDL.h>
+#include<cstdlib>
+#include<ctime>
 #include<string>
 #include "game.h"
+#include "image.h"
+#include "BaseInfo.h"
+
 struct sources
 {
     // Constructor
@@ -20,6 +25,10 @@ struct sources
     bool running;
 
     game* Game;
+
+    image* Image;
+
 };
+
 #endif // SOURCES_H_
 
