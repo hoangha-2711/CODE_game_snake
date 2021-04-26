@@ -8,6 +8,7 @@ sources::sources()
     renderer = NULL;
     running = false;
     Game = NULL;
+    Image = new image;
 
 }
 
@@ -32,6 +33,9 @@ sources::~sources()
 
     delete Game;
     Game = NULL;
+
+    delete Image;
+    Image = NULL;
 }
 
 void sources::init(int width , int height, std::string _title)
@@ -59,6 +63,8 @@ void sources::init(int width , int height, std::string _title)
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     Game = new game();
+
+    Game->init(renderer);
 }
 
 
@@ -87,16 +93,11 @@ bool sources::isRunning()
 
 void sources::loop()
 {
-    Game->loop();
+    Game->loop(running);
 }
 
 void sources::render()
 {
-    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-    SDL_RenderClear(renderer);
-
-    Game->render();
-
-    SDL_RenderPresent(renderer);
+    Game->render(renderer);
 }
 
