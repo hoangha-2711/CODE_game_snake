@@ -5,69 +5,47 @@
 image::image()
 {
     texture_snake = NULL;
-    texture_fruits = NULL;
     return;
 }
 
 image::~image()
 {
     texture_snake = NULL;
-    texture_fruits = NULL;
     return;
 }
 
 void image::init(SDL_Renderer* _renderer)
 {
     renderer = _renderer;
-    return;
 }
 
-void image::Load()
+void image::render(SDL_Renderer* des, SDL_Texture* texture, const int& rectX, const int& rectY, const int& reW, const int& reH, SDL_Rect* clip)
 {
-    texture_snake = loadFromFIle(renderer,"body_snake.png");
-    texture_fruits = loadFromFIle(renderer,"small_fruits.png");
-
-    return;
+    SDL_Rect renderQuad = {rectX, rectY, reW, reH};
+    SDL_RenderCopy(des, texture , clip, &renderQuad);
 }
 
-void image::draw_snake(SDL_Rect dest)
+void image::load()
 {
-    SDL_RenderCopy(renderer, texture_snake, NULL, &dest);
-    return;
+    texture_snake = loadTexture(renderer, "body_snake.png");
+    texture_fruit = loadTexture(renderer, "fruit.png");
 }
 
-void image::draw_fruits(SDL_Rect dest)
+void image::draw_snake(const vector<SDL_Rect>& snakeCell)
 {
-    SDL_RenderCopy(renderer, texture_fruits, NULL, &dest);
-    return;
+    int numberCell = snakeCell.size();
+    for(int i = 0; i < numberCell; i++) render(renderer, texture_snake, snakeCell[i].x, snakeCell[i].y, SNAKE_CELL, SNAKE_CELL);
 }
 
-SDL_Texture* loadFromFIle(SDL_Renderer* renderer, std::string path)
+void image::draw_fruit(const int& posX, const int& posY)
 {
-    SDL_Texture* tmpTexture = NULL;
-    SDL_Surface* tmpSurface = IMG_Load(path.c_str());
-    if (tmpSurface == NULL)
-    {
-        std::cout << "Unable to create texture from " << path.c_str() << "! SDL Error: " << SDL_GetError();
-        return tmpTexture;
-    }
-
-    tmpTexture = SDL_CreateTextureFromSurface(renderer, tmpSurface);
-    if (tmpTexture == NULL)
-    {
-        std::cout << "Unable to create texture from " << path.c_str() << "! SDL Error: " << SDL_GetError();
-        return tmpTexture;
-    }
-
-    //cout << done!
-    return tmpTexture;
+    render(renderer, texture_fruit, posX, posY, FRUIT_CELL, FRUIT_CELL);
 }
 
 void image::free()
 {
     SDL_DestroyTexture (texture_snake);
     texture_snake = NULL;
-    SDL_DestroyTexture (texture_fruits);
-    texture_fruits = NULL;
-
+    SDL_DestroyTexture (texture_fruit);
+    texture_fruit = NULL;
 }
