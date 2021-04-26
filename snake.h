@@ -4,21 +4,42 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
-struct snake
+using namespace std;
+
+const int SNAKE_SIZE = 128;
+const int SNAKE_SPEED = 8;
+
+enum Direction
 {
+    Up,
+    Down,
+    Left,
+    Right,
+    None
+};
+
+class snake
+{
+public:
     //constructor
     snake();
     //destructor
     ~snake();
-    point.body[500];
-    int fruits_count;
-    void init(int x, int y, SDL_Renderer* _renderer);
-    void loop();
-    void render();
-    void dead();
-    SDL_Renderer* renderer;
-    int cur_length;
-    SDL_Texture* texture;
+    void setDirection(int newDirect);
+    void eraseTail();
+    void snakeMove();
+    bool getFruit();
+    void moveSnakeCell();
+    void grownUp();
+    bool dead();
+    vector<SDL_Rect> getCell();
+    int getPosX();
+    int getPosY();
+private:
+    bool isDead, grow;
+    int direct, preDirect;
+    vector<SDL_Rect> snakeCell;
+    SDL_Rect snakePart;
 };
 
 #endif // SNAKE_H_
