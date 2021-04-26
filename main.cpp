@@ -1,13 +1,10 @@
 #include "sources.h"
 
-
-
-const int SCREEN_WIDTH = 1000;
-const int SCREEN_HEIGHT = 800;
 const std::string WINDOW_TITLE = "SDL Game";
 
 int main(int argc, char* argv[])
 {
+    srand(time(NULL));
     sources* Gamesources;
     Gamesources = new sources();
 
