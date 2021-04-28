@@ -9,7 +9,7 @@ bool Collision(const SDL_Rect& object_1, const SDL_Rect& object_2)
     int topA, topB;
     int bottomA, bottomB;
     leftA = object_1.x;
-    rightA = object_1.x + object_1.w;
+    rightA = object_1.x + object_1.w; 
     topA = object_1.y;
     bottomA = object_1.y + object_1.h;
     leftB = object_2.x;
