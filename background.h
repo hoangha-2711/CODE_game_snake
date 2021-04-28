@@ -6,8 +6,6 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
-const int WALL_CELL = 50;
-
 struct background
 {
     //Constructor
