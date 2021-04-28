@@ -30,6 +30,7 @@ struct game
     scoreGame bestPoint; // font hiển thị điểm cao
     int countFruit = 0;
     int maxFruit = ReadFile();
+    gameSound voice;
 };
 
 
