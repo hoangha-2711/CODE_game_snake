@@ -1,120 +1,85 @@
-#include "snake.h"
-#include "sources.h"
+#include "game.h"
 #include <iostream>
-#include <string>
 
-snake::snake()
-{
-    snakePart.x = SCREEN_WIDTH / 4;
-    snakePart.y = SCREEN_HEIGHT / 2;
-    snakePart.h = SNAKE_SIZE;
-    snakePart.w = SNAKE_SIZE;
-    direct = None;
-    preDirect = None;
-    snakeCell.push_back(snakePart);
-    isDead = false;
-    grow = false;
-}
-
-snake::~snake()
+game::game()
 {
 
 }
 
-void snake::setDirection(int newDirect)
+game::~game()
 {
-    if(direct == None)
+
+}
+
+void game::init(SDL_Renderer* renderer)
+{
+    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF); // clear cả màn -> màu trắng
+    SDL_RenderClear(renderer);
+
+    gameBackground.init(renderer);
+    gameBackground.load();
+    snakeImage.init(renderer);
+    snakeImage.load();
+    fruitImage.init(renderer);
+    fruitImage.load();
+    point.init(renderer);
+    point.load();
+    bestPoint.init(renderer);
+    bestPoint.load();
+}
+
+void game::handleKeyPress(int key_code)
+{
+    switch(key_code)
     {
-        preDirect = direct;
-        direct = newDirect;
+        case SDLK_UP:
+            player.setDirection(Up);
+            break;
+        case SDLK_DOWN:
+            player.setDirection(Down);
+            break;
+        case SDLK_LEFT:
+            player.setDirection(Left);
+            break;
+        case SDLK_RIGHT:
+            player.setDirection(Right);
+            break;
     }
-    else if((direct == Up && newDirect != Down) || (direct == Down && newDirect != Up))
+    player.snakeMove();
+}
+void game::loop(bool& running)
+{
+    SDL_Delay(GAME_DELAY);
+    player.snakeMove();// di chuyển rắn
+    score.spawnFruit();// sinh ngẫu nhiên fruit
+    SDL_Rect playerRect = {player.getPosX(), player.getPosY(), SNAKE_CELL, SNAKE_CELL}; // lấy vị trí đầu rắn
+    SDL_Rect scoreRect = {score.getPosX(), score.getPosY(), FRUIT_CELL, FRUIT_CELL};// lấy vị trí fruit
+    if(Collision(playerRect, scoreRect)) // nếu con rắn va chạm với fruit
     {
-        preDirect = direct;
-        direct = newDirect;
+        score.decreaseFruit(); // giảm số fruit
+        player.grownUp();// con rắn to thêm
+        countFruit++; // điểm
+        if(countFruit > maxFruit) //nếu điểm lớn hơn điểm cao
+        {
+            //cập nhật điểm cao
+            SDL_RWops* file = SDL_RWFromFile("highscore.bin", "w+b");
+            maxFruit = countFruit;
+            SDL_RWwrite(file, &maxFruit, sizeof(Sint32), 1);
+            SDL_RWclose(file);
+        }
     }
-    else if((direct == Left && newDirect != Right) || (direct == Right && newDirect != Left))
-    {
-        preDirect = direct;
-        direct = newDirect;
-    }
+    if(player.dead()) running = false;
 }
 
-void snake::eraseTail()
+void game::render(SDL_Renderer* renderer)
 {
-    snakeCell.erase(snakeCell.begin());
-}
+    gameBackground.display();// hiển thị background
 
-void snake::snakeMove()
-{
-    switch(direct)
-    {
-    case Up:
-        if(preDirect != Down)
-        {
-            snakePart.y -= SNAKE_SPEED;
-            snakeCell.push_back(snakePart);
-            if(!grow) eraseTail();
-            else grow = false;
-            if(snakePart.y < LIMIT_UP) isDead = true;//snakePart.y += SNAKE_SPEED;
-        }
-        break;
-    case Down:
-        if(preDirect != Up)
-        {
-            snakePart.y += SNAKE_SPEED;
-            snakeCell.push_back(snakePart);
-            if(!grow) eraseTail();
-            else grow = false;
-            if(snakePart.y > SCREEN_HEIGHT - LIMIT_DOWN - SNAKE_CELL) isDead = true;//snakePart.y -= SNAKE_SPEED;
-        }
-        break;
-    case Left:
-        if(preDirect != Right)
-        {
-            snakePart.x -= SNAKE_SPEED;
-            snakeCell.push_back(snakePart);
-            if(!grow) eraseTail();
-            else grow = false;
-            if(snakePart.x < LIMIT_LEFT) isDead = true;//snakePart.x += SNAKE_SPEED;
-        }
-        break;
-    case Right:
-        if(preDirect != Left)
-        {
-            snakePart.x += SNAKE_SPEED;
-            snakeCell.push_back(snakePart);
-            if(!grow) eraseTail();
-            else grow = false;
-            if(snakePart.x > SCREEN_WIDTH - LIMIT_RIGHT - SNAKE_CELL) isDead = true;//snakePart.x -= SNAKE_SPEED;
-        }
-        break;
-    case None:
-        break;
-    }
-}
+    snakeImage.draw_snake(player.getCell()); // hiển thị rắn
+    if(score.countFruit() > 0) fruitImage.draw_fruit(score.getPosX(), score.getPosY());// nếu có fruit thì hiển thi fruit
 
-void snake::grownUp()
-{
-    grow = true;
-}
+    point.writeText("Score:", countFruit, WALL_CELL, WALL_CELL);
+    bestPoint.writeText("Highscore:", maxFruit, 10 * WALL_CELL, WALL_CELL);
 
-bool snake::dead()
-{
-    return isDead;
-}
-
-vector<SDL_Rect> snake::getCell()
-{
-    return snakeCell;
-}
-
-int snake::getPosX()
-{
-    return snakePart.x;
-}
-
-int snake::getPosY()
-{
-    return snakePart.y;
+    SDL_RenderPresent(renderer);
 }
