@@ -13,6 +13,9 @@ game::~game()
 
 void game::init(SDL_Renderer* renderer)
 {
+    voice.load();
+    voice.playMusic();
+    
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
     SDL_RenderClear(renderer);
 
@@ -56,6 +59,7 @@ void game::loop(bool& running)
     SDL_Rect scoreRect = {score.getPosX(), score.getPosY(), FRUIT_CELL, FRUIT_CELL};
     if(Collision(playerRect, scoreRect)) 
     {
+        voice.playChunk();
         score.decreaseFruit(); 
         player.grownUp();
         countFruit++; 
