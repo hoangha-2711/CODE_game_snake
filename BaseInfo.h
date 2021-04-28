@@ -12,11 +12,13 @@ const int LIMIT_UP = 45;
 const int LIMIT_DOWN = 45;
 const int LIMIT_LEFT = 45;
 const int LIMIT_RIGHT = 45;
+const int WALL_CELL = 50;
 const int SNAKE_CELL = 40;
 const int FRUIT_CELL = 20;
+const int SCORE_GAME = 1;
 
 const int GAME_DELAY = 15;
 
-bool Collision(const SDL_Rect& object_1, const SDL_Rect& object_2);
+bool Collision(const SDL_Rect& object_1, const SDL_Rect& object_2); // check va chạm giữa hai vật thể
 
 #endif // BASE_INFO_H_
