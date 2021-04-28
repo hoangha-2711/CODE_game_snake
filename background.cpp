@@ -23,7 +23,7 @@ void background::render(SDL_Renderer* des, SDL_Texture* texture, const int& rect
 }
 void background::load()
 {
-    background_game = loadTexture(renderer, "background_brown.png");
+    background_game = loadTexture(renderer, "background_black.png");
     wall = loadTexture(renderer, "block_square.png");
 }
 void background::display()
