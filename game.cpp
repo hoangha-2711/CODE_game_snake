@@ -13,7 +13,7 @@ game::~game()
 
 void game::init(SDL_Renderer* renderer)
 {
-    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF); // clear cả màn -> màu trắng
+    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
     SDL_RenderClear(renderer);
 
     gameBackground.init(renderer);
@@ -50,16 +50,16 @@ void game::handleKeyPress(int key_code)
 void game::loop(bool& running)
 {
     SDL_Delay(GAME_DELAY);
-    player.snakeMove();// di chuyển rắn
-    score.spawnFruit();// sinh ngẫu nhiên fruit
-    SDL_Rect playerRect = {player.getPosX(), player.getPosY(), SNAKE_CELL, SNAKE_CELL}; // lấy vị trí đầu rắn
-    SDL_Rect scoreRect = {score.getPosX(), score.getPosY(), FRUIT_CELL, FRUIT_CELL};// lấy vị trí fruit
-    if(Collision(playerRect, scoreRect)) // nếu con rắn va chạm với fruit
+    player.snakeMove();
+    score.spawnFruit();
+    SDL_Rect playerRect = {player.getPosX(), player.getPosY(), SNAKE_CELL, SNAKE_CELL}; 
+    SDL_Rect scoreRect = {score.getPosX(), score.getPosY(), FRUIT_CELL, FRUIT_CELL};
+    if(Collision(playerRect, scoreRect)) 
     {
-        score.decreaseFruit(); // giảm số fruit
-        player.grownUp();// con rắn to thêm
-        countFruit++; // điểm
-        if(countFruit > maxFruit) //nếu điểm lớn hơn điểm cao
+        score.decreaseFruit(); 
+        player.grownUp();
+        countFruit++; 
+        if(countFruit > maxFruit)
         {
             //cập nhật điểm cao
             SDL_RWops* file = SDL_RWFromFile("highscore.bin", "w+b");
@@ -73,10 +73,10 @@ void game::loop(bool& running)
 
 void game::render(SDL_Renderer* renderer)
 {
-    gameBackground.display();// hiển thị background
+    gameBackground.display();
 
-    snakeImage.draw_snake(player.getCell()); // hiển thị rắn
-    if(score.countFruit() > 0) fruitImage.draw_fruit(score.getPosX(), score.getPosY());// nếu có fruit thì hiển thi fruit
+    snakeImage.draw_snake(player.getCell()); 
+    if(score.countFruit() > 0) fruitImage.draw_fruit(score.getPosX(), score.getPosY());
 
     point.writeText("Score:", countFruit, WALL_CELL, WALL_CELL);
     bestPoint.writeText("Highscore:", maxFruit, 10 * WALL_CELL, WALL_CELL);
