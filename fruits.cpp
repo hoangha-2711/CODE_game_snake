@@ -15,7 +15,7 @@ void fruits::spawnFruit()
         x = rand() % SCREEN_WIDTH;
         y = rand() % SCREEN_HEIGHT;
         if(x < 2 * LIMIT_LEFT) x = 2 * LIMIT_LEFT;
-        if(x > SCREEN_WIDTH - 2 * LIMIT_RIGHT - FRUIT_CELL) x = SCREEN_WIDTH - 2 * LIMIT_RIGHT - FRUIT_CELL;
+        if(x > SCREEN_WIDTH - 2 * LIMIT_RIGHT - FRUIT_CELL) x = SCREEN_WIDTH - 2 * LIMIT_RIGHT - FRUIT_CELL; 
         if(y < 2 * LIMIT_UP) y = 2 * LIMIT_UP;
         if(y > SCREEN_HEIGHT - 2 * LIMIT_DOWN - FRUIT_CELL) y = SCREEN_HEIGHT - 2 * LIMIT_DOWN - FRUIT_CELL;
         numFruit++;
