@@ -5,12 +5,14 @@
 image::image()
 {
     texture_snake = NULL;
+    texture_fruit = NULL;
     return;
 }
 
 image::~image()
 {
     texture_snake = NULL;
+    texture_fruit = NULL;
     return;
 }
 
@@ -35,6 +37,7 @@ void image::draw_snake(const vector<SDL_Rect>& snakeCell)
 {
     int numberCell = snakeCell.size();
     for(int i = 0; i < numberCell; i++) render(renderer, texture_snake, snakeCell[i].x, snakeCell[i].y, SNAKE_CELL, SNAKE_CELL);
+  
 }
 
 void image::draw_fruit(const int& posX, const int& posY)
@@ -44,8 +47,8 @@ void image::draw_fruit(const int& posX, const int& posY)
 
 void image::free()
 {
-    SDL_DestroyTexture (texture_snake);
+    SDL_DestroyTexture(texture_snake);
     texture_snake = NULL;
-    SDL_DestroyTexture (texture_fruit);
+    SDL_DestroyTexture(texture_fruit);
     texture_fruit = NULL;
 }
