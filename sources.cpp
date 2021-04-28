@@ -8,7 +8,7 @@ sources::sources()
     renderer = NULL;
     running = false;
     Game = NULL;
-    Image = new image;
+    Image = new image; // cấp phát động
 
 }
 
@@ -18,7 +18,7 @@ sources::~sources()
     if( renderer != NULL)
     {
 
-        SDL_DestroyRenderer(renderer);
+        SDL_DestroyRenderer(renderer); // hủy bút vẽ
         renderer = NULL;
 
     }
@@ -26,7 +26,7 @@ sources::~sources()
     if( window != NULL)
     {
 
-        SDL_DestroyWindow(window);
+        SDL_DestroyWindow(window);// hủy cửa sổ
         window = NULL;
 
     }
@@ -47,10 +47,16 @@ void sources::init(int width , int height, std::string _title)
         running = false;
         return;
     }
+    if(TTF_Init() < 0)
+    {
+        std::cout  << "TTF could not initialize! SDL_Error: " << TTF_GetError();
+        running = false;
+        return;
+    }
 
     window = SDL_CreateWindow(_title.c_str(),
                                 SDL_WINDOWPOS_UNDEFINED,
-                                SDL_WINDOWPOS_UNDEFINED,
+                                SDL_WINDOWPOS_UNDEFINED,  // khởi tạo cửa sổ
                                 width,
                                 height,
                                 SDL_WINDOW_SHOWN);
@@ -64,7 +70,7 @@ void sources::init(int width , int height, std::string _title)
 
     Game = new game();
 
-    Game->init(renderer);
+    Game->init(renderer); // con trỏ, chạy khởi tạo
 }
 
 
@@ -80,7 +86,7 @@ void sources::handleEvent()
 
         if(event.type == SDL_KEYDOWN)
         {
-            Game->handleKeyPress(event.key.keysym.sym);
+            Game->handleKeyPress(event.key.keysym.sym); // xử lý phím bấm
         }
     }
 
