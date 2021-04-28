@@ -7,15 +7,15 @@
 using namespace std;
 
 const int SNAKE_SIZE = 128;
-const int SNAKE_SPEED = 8;
+const int SNAKE_SPEED = 15;
 
-enum Direction
+enum Direction // khởi tạo các hướng
 {
     Up,
     Down,
     Left,
     Right,
-    None
+    None// ko di chuyển
 };
 
 class snake
@@ -26,7 +26,7 @@ public:
     //destructor
     ~snake();
     void setDirection(int newDirect);
-    void eraseTail();
+    void eraseTail(); 
     void snakeMove();
     bool getFruit();
     void moveSnakeCell();
