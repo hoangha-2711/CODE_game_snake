@@ -1,27 +1,52 @@
-#ifndef BACKGROUND_H_
-#define BACKGROUND_H_
-#include "BaseInfo.h"
-#include "texture_manage.h"
-#include <bits/stdc++.h>
-#include <SDL.h>
-#include <SDL_image.h>
+#include "background.h"
+#include <iostream>
+#include <string>
 
-struct background
+background::background()
 {
-    //Constructor
-    background();
-    //Destructor
-    ~background();
+    background_game = NULL;
+    wall = NULL;
+}
+background::~background()
+{
+    background_game = NULL;
+    wall = NULL;
+}
+void background::init(SDL_Renderer* _renderer)
+{
+    renderer = _renderer;
+}
+void background::render(SDL_Renderer* des, SDL_Texture* texture, const int& rectX, const int& rectY, const int& reW, const int& reH, SDL_Rect* clip)
+{
+    SDL_Rect renderQuad = {rectX, rectY, reW, reH};
+    SDL_RenderCopy(des, texture , clip, &renderQuad);
+}
+void background::load()
+{
+    background_game = loadTexture(renderer, "background_black.png");
+    wall = loadTexture(renderer, "block_square.png");
+}
+void background::display()
+{
+    render(renderer, background_game, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-    void init(SDL_Renderer* _renderer);
-    void render(SDL_Renderer* des, SDL_Texture* texture, const int& rectX = 0, const int& rectY = 0, const int& reW = 0, const int& reH = 0, SDL_Rect* clip = NULL);
-    void load();
-    void display();
-    void free();
-
-    SDL_Renderer *renderer;
-    SDL_Texture *background_game;
-    SDL_Texture *wall;
-};
-
-#endif // BACKGROUND_H_
+    // Load wall up and down
+    for(int x = 0; x <= SCREEN_WIDTH; x += WALL_CELL)
+    {
+        render(renderer, wall, x, 0, WALL_CELL, WALL_CELL);
+        render(renderer, wall, x, SCREEN_HEIGHT - WALL_CELL, WALL_CELL, WALL_CELL);
+    }
+    // Load wall left and right
+    for(int y = 0; y <= SCREEN_HEIGHT; y += WALL_CELL)
+    {
+        render(renderer, wall, 0, y, WALL_CELL, WALL_CELL);
+        render(renderer, wall, SCREEN_WIDTH - WALL_CELL, y, WALL_CELL, WALL_CELL);
+    }
+}
+void background::free()
+{
+    SDL_DestroyTexture(background_game);
+    background_game = NULL;
+    SDL_DestroyTexture(wall);
+    wall = NULL;
+}
