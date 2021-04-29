@@ -23,7 +23,7 @@ snake::~snake()
 
 void snake::setDirection(int newDirect)
 {
-    if(direct == None)
+    if(direct == None) 
     {
         preDirect = direct;
         direct = newDirect;
@@ -50,7 +50,7 @@ void snake::snakeMove()
     switch(direct)
     {
     case Up:
-        if(preDirect != Down)
+        if(preDirect != Down) 
         {
             snakePart.y -= SNAKE_SPEED; 
             snakeCell.push_back(snakePart);
