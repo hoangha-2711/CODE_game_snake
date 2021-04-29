@@ -7,7 +7,7 @@
 using namespace std;
 
 const int SNAKE_SIZE = 128;
-const int SNAKE_SPEED = 15;
+const int SNAKE_SPEED = 11;
 
 enum Direction // khởi tạo các hướng
 {
@@ -32,7 +32,7 @@ public:
     void moveSnakeCell();
     void grownUp();
     bool dead();
-    vector<SDL_Rect> getCell();
+    vector<SDL_Rect> getCell(); 
     int getPosX();
     int getPosY();
 private:
