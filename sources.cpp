@@ -63,6 +63,7 @@ void sources::init(int width , int height, std::string _title)
         }
     }
 
+
     window = SDL_CreateWindow(_title.c_str(),
                                 SDL_WINDOWPOS_UNDEFINED,
                                 SDL_WINDOWPOS_UNDEFINED,  // khởi tạo cửa sổ
@@ -82,6 +83,13 @@ void sources::init(int width , int height, std::string _title)
     Game->init(renderer); // con trỏ, chạy khởi tạo
 }
 
+void sources::reset()
+{
+    running = true;
+    delete Game;
+    Game = new game();
+    Game->init(renderer);
+}
 
 void sources::handleEvent()
 {
