@@ -27,9 +27,9 @@ void scoreGame::load()
 }
 void scoreGame::writeText(const string& content, const int& score, const int& posX, const int& posY)
 {
-    string text = content; // gán nội dung
+    string text = content; 
     text = text + to_string(score);
-    point = loadFont(renderer, fontScore, text);
+    point = loadFont(renderer, point, fontScore, text);
     SDL_Point sizeFont;
     SDL_QueryTexture(point, NULL, NULL, &sizeFont.x, &sizeFont.y);
     render(renderer, point, posX, posY, sizeFont.x, sizeFont.y);
