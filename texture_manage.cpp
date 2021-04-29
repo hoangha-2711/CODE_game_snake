@@ -4,29 +4,26 @@
 
 using namespace std;
 
-SDL_Texture* loadTexture(SDL_Renderer* renderer, string path)
+SDL_Texture* loadTexture(SDL_Renderer* renderer, SDL_Texture* texture, string path)
 {
-    //The final texture
-    SDL_Texture* newTexture = NULL;
-
     //Load image at specified path
     SDL_Surface* loadedSurface = IMG_Load(path.c_str());
     if (loadedSurface == NULL)
     {
-        cout << "Unable to load image " << path.c_str() << "! SDL_image Error: " << IMG_GetError();
+        cout << "Unable to load image " << path.c_str() << "! SDL_image Error: " << IMG_GetError() << "\n";
     }
     else
     {
         //Create texture from surface pixels
-        newTexture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
-        if (newTexture == NULL)
+        SDL_DestroyTexture(texture);
+        texture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
+        if (texture == NULL)
         {
-            cout << "Unable to create texture from " << path.c_str() << "! SDL Error: " << SDL_GetError();
+            cout << "Unable to create texture from " << path.c_str() << "! SDL Error: " << SDL_GetError() << "\n";
         }
 
-        //Get rid of old loaded surface
         SDL_FreeSurface(loadedSurface);
     }
 
-    return newTexture;
+    return texture;
 }
