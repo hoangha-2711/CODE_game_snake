@@ -5,7 +5,7 @@
 #include <SDL_ttf.h>
 using namespace std;
 
-SDL_Texture* loadFont(SDL_Renderer* renderer, TTF_Font* font, string text);
+SDL_Texture* loadFont(SDL_Renderer* renderer, SDL_Texture* texture, TTF_Font* font, string text);
 
 #endif // FONT_MANAGE_H_
 
