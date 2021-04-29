@@ -15,15 +15,17 @@ struct image
 
     void init(SDL_Renderer* _renderer);
     void render(SDL_Renderer* des, SDL_Texture* texture, const int& rectX = 0, const int& rectY = 0, const int& reW = 0, const int& reH = 0, SDL_Rect* clip = NULL);
+   
     void load();
-    void draw_snake(const vector<SDL_Rect>& snakeCell); 
+    void draw_snake(const vector<SDL_Rect>& snakeCell); // vector lưu đốt rắn
     void draw_fruit(const int& posX, const int& posY);
     void free();
 
     SDL_Renderer* renderer;
     SDL_Texture* texture_snake;
     SDL_Texture* texture_fruit;
-   
+    //SDL_Rect snake_sprite;
+
 };
 
 #endif // IMAGE_H_
