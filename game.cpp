@@ -1,5 +1,6 @@
 #include "game.h"
 #include <iostream>
+#include "sound.h"
 
 game::game()
 {
@@ -15,10 +16,9 @@ void game::init(SDL_Renderer* renderer)
 {
     voice.load();
     voice.playMusic();
-    
-    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-    SDL_RenderClear(renderer);
 
+    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF); // clear cả màn -> màu trắng
+    SDL_RenderClear(renderer);
     gameBackground.init(renderer);
     gameBackground.load();
     snakeImage.init(renderer);
@@ -63,9 +63,8 @@ void game::loop(bool& running)
         score.decreaseFruit(); 
         player.grownUp();
         countFruit++; 
-        if(countFruit > maxFruit)
+        if(countFruit > maxFruit) 
         {
-            //cập nhật điểm cao
             SDL_RWops* file = SDL_RWFromFile("highscore.bin", "w+b");
             maxFruit = countFruit;
             SDL_RWwrite(file, &maxFruit, sizeof(Sint32), 1);
