@@ -5,7 +5,6 @@
 
 using namespace std;
 
-SDL_Texture* loadTexture(SDL_Renderer* renderer, string path); 
-
+SDL_Texture* loadTexture(SDL_Renderer* renderer, SDL_Texture* texture, string path); 
 #endif // TEXTURE_MANAGE_H_
 
