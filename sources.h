@@ -7,6 +7,7 @@
 #include "game.h"
 #include "image.h"
 #include "BaseInfo.h"
+#include <SDL_mixer.h>
 
 struct sources
 {
@@ -16,6 +17,7 @@ struct sources
     ~sources();
     void init(int w, int h, std::string _title);
     bool isRunning();
+    void reset();
     void handleEvent();
     void loop();
     void render();
@@ -24,9 +26,11 @@ struct sources
     SDL_Renderer* renderer;
     bool running;
 
-    game* Game;
+    game* Game; 
 
     image* Image;
+
+
 
 };
 
