@@ -3,7 +3,7 @@
 #include <bits/stdc++.h>
 #include <SDL.h>
 #include <SDL_image.h>
-
+#include <SDL_mixer.h>
 using namespace std;
 
 const int SCREEN_WIDTH = 1000;
@@ -14,11 +14,11 @@ const int LIMIT_LEFT = 45;
 const int LIMIT_RIGHT = 45;
 const int WALL_CELL = 50;
 const int SNAKE_CELL = 40;
-const int FRUIT_CELL = 20;
+const int FRUIT_CELL = 40;
 const int SCORE_GAME = 1;
 
 const int GAME_DELAY = 15;
 
-bool Collision(const SDL_Rect& object_1, const SDL_Rect& object_2); // check va chạm giữa hai vật thể
+bool Collision(const SDL_Rect& object_1, const SDL_Rect& object_2); 
 
 #endif // BASE_INFO_H_
