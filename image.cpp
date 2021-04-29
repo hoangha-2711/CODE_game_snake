@@ -23,21 +23,21 @@ void image::init(SDL_Renderer* _renderer)
 
 void image::render(SDL_Renderer* des, SDL_Texture* texture, const int& rectX, const int& rectY, const int& reW, const int& reH, SDL_Rect* clip)
 {
-    SDL_Rect renderQuad = {rectX, rectY, reW, reH};
+    SDL_Rect renderQuad = {rectX, rectY, reW, reH}; // vị trí render trên cửa sổ
     SDL_RenderCopy(des, texture , clip, &renderQuad);
 }
 
 void image::load()
 {
-    texture_snake = loadTexture(renderer, "body_snake.png");
-    texture_fruit = loadTexture(renderer, "fruit.png");
+    texture_snake = loadTexture(renderer, texture_snake, "body_snake.png");
+    texture_fruit = loadTexture(renderer, texture_fruit, "fruit.png");
 }
 
 void image::draw_snake(const vector<SDL_Rect>& snakeCell)
 {
     int numberCell = snakeCell.size();
     for(int i = 0; i < numberCell; i++) render(renderer, texture_snake, snakeCell[i].x, snakeCell[i].y, SNAKE_CELL, SNAKE_CELL);
-  
+   
 }
 
 void image::draw_fruit(const int& posX, const int& posY)
