@@ -19,6 +19,7 @@ struct scoreGame
     void render(SDL_Renderer* des, SDL_Texture* texture, const int& rectX = 0, const int& rectY = 0, const int& width = 0, const int& height = 0, SDL_Rect* clip = NULL);
     void load();
     void writeText(const string& content, const int& text, const int& posX, const int& posY);
+  
     void free();
 
     TTF_Font* fontScore; 
